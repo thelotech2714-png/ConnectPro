@@ -1,0 +1,10 @@
+{
+  "name": "ISP SaaS White Label",
+  "description": "Plataforma SaaS multi-empresa para provedores de internet com painéis administrativo, do provedor e do cliente, incluindo marketing com IA e gestão de rede.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

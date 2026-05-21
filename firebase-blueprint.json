@@ -1,0 +1,106 @@
+{
+  "entities": {
+    "Provider": {
+      "title": "Provider",
+      "description": "An Internet Service Provider (tenant)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "subdomain": { "type": "string" },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "logoUrl": { "type": "string" },
+            "primaryColor": { "type": "string" },
+            "theme": { "type": "string" },
+            "whatsapp": { "type": "string" },
+            "email": { "type": "string" }
+          }
+        },
+        "planType": { "type": "string", "enum": ["basic", "premium"] },
+        "status": { "type": "string", "enum": ["active", "blocked"] },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["name", "planType", "status", "ownerId"]
+    },
+    "Client": {
+      "title": "Client",
+      "description": "An ISP Client",
+      "type": "object",
+      "properties": {
+        "providerId": { "type": "string" },
+        "name": { "type": "string" },
+        "cpfCnpj": { "type": "string" },
+        "address": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "planId": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "blocked", "overdue"] },
+        "uid": { "type": "string" }
+      },
+      "required": ["providerId", "name", "cpfCnpj", "status"]
+    },
+    "Equipment": {
+      "title": "Equipment",
+      "description": "Router or ONU",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "providerId": { "type": "string" },
+        "type": { "type": "string", "enum": ["router", "onu"] },
+        "model": { "type": "string" },
+        "mac": { "type": "string" },
+        "serial": { "type": "string" },
+        "ip": { "type": "string" }
+      },
+      "required": ["clientId", "providerId", "type", "model"]
+    },
+    "Billing": {
+      "title": "Billing",
+      "description": "Invoices and Payments",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "providerId": { "type": "string" },
+        "amount": { "type": "number" },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "paid", "overdue"] },
+        "pixKey": { "type": "string" }
+      },
+      "required": ["clientId", "providerId", "amount", "dueDate", "status"]
+    },
+    "Ticket": {
+      "title": "Ticket",
+      "description": "Support request",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "providerId": { "type": "string" },
+        "subject": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "closed"] },
+        "lastMessageAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientId", "providerId", "subject", "status"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Chat message",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "text": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/providers/{providerId}": { "schema": "Provider", "description": "ISP Tenants" },
+    "/clients/{clientId}": { "schema": "Client", "description": "ISP Clients" },
+    "/equipments/{equipmentId}": { "schema": "Equipment", "description": "Client Hardware" },
+    "/billing/{billingId}": { "schema": "Billing", "description": "Invoices" },
+    "/tickets/{ticketId}": { "schema": "Ticket", "description": "Support Tickets" },
+    "/tickets/{ticketId}/messages/{messageId}": { "schema": "Message", "description": "Chat Messages" },
+    "/admins/{adminId}": { "schema": { "type": "object", "properties": { "role": { "type": "string" } } }, "description": "Master Admins" }
+  }
+}
